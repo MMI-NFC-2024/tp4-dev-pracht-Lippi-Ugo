@@ -1,0 +1,18 @@
+---
+const { current = "/" } = Astro.props;
+---
+
+<header>
+  <div class="nav-content">
+    <nav>
+      <ul>
+        <li><a href="/" class={current === "/" ? "active" : ""}>Accueil</a></li>
+        <li><a href="/simple" class={current === "/simple" ? "active" : ""}>Simple</a></li>
+        <li><a href="/penguinssimple" class={current === "/penguinssimple" ? "active" : ""}>Penguins Simple</a></li>
+        <li><a href="/penguinsfiltre" class={current === "/penguinsfiltre" ? "active" : ""}>Penguins Filtre</a></li>
+        <li><a href="/penguinsmultifiltre" class={current === "/penguinsmultifiltre" ? "active" : ""}>Penguins Multi Filtre</a></li>
+        <li><a href="/weatherfiltre" class={current === "/weatherfiltre" ? "active" : ""}>Weather Filtre</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
