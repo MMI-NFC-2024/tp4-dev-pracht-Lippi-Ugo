@@ -8,10 +8,28 @@ const { current = "/" } = Astro.props;
       <ul>
         <li><a href="/" class={current === "/" ? "active" : ""}>Accueil</a></li>
         <li><a href="/simple" class={current === "/simple" ? "active" : ""}>Simple</a></li>
-        <li><a href="/penguinssimple" class={current === "/penguinssimple" ? "active" : ""}>Penguins Simple</a></li>
-        <li><a href="/penguinsfiltre" class={current === "/penguinsfiltre" ? "active" : ""}>Penguins Filtre</a></li>
-        <li><a href="/penguinsmultifiltre" class={current === "/penguinsmultifiltre" ? "active" : ""}>Penguins Multi Filtre</a></li>
-        <li><a href="/weatherfiltre" class={current === "/weatherfiltre" ? "active" : ""}>Weather Filtre</a></li>
+
+        <li>
+          <details class="group">
+            <summary class="cursor-pointer text-white">Penguins ▾</summary>
+            <ul class="mt-2 bg-white/5 p-2 rounded">
+              <li><a href="/penguinssimple" class={current === "/penguinssimple" ? "active" : ""}>Simple</a></li>
+              <li><a href="/penguinsfiltre" class={current === "/penguinsfiltre" ? "active" : ""}>Filtre</a></li>
+              <li><a href="/penguinsmultifiltre" class={current === "/penguinsmultifiltre" ? "active" : ""}>Multi Filtre</a></li>
+            </ul>
+          </details>
+        </li>
+
+        <li>
+          <details class="group">
+            <summary class="cursor-pointer text-white">Weather ▾</summary>
+            <ul class="mt-2 bg-white/5 p-2 rounded">
+              <li><a href="/weathersimple" class={current === "/weathersimple" ? "active" : ""}>Simple</a></li>
+              <li><a href="/weatherfiltre" class={current === "/weatherfiltre" ? "active" : ""}>Filtre</a></li>
+              <li><a href="/weathermultifiltre" class={current === "/weathermultifiltre" ? "active" : ""}>Multi Filtre</a></li>
+            </ul>
+          </details>
+        </li>
       </ul>
     </nav>
   </div>

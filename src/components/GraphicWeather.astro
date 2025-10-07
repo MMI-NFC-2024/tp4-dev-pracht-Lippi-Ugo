@@ -1,0 +1,26 @@
+---
+import weather from '../assets/weather.json';
+import * as Plot from "@observablehq/plot";
+import PlotFigure from './PlotFigure.astro';
+
+const { location = '', year = '', metric = 'temp_max', title = 'Graphique météo' } = Astro.props;
+
+const data = weather
+  .map(d => ({ ...d, date: new Date(d.date) }))
+  .filter(d => (!location || d.location === location) && (!year || d.date.getFullYear().toString() === year.toString()));
+---
+
+<div>
+  <h1 class="mb-6 text-2xl">{title}{location ? ` — ${location}` : ''}{year ? ` (${year})` : ''}</h1>
+  <PlotFigure
+    options={{
+      marks: [
+        Plot.line(data, { x: 'date', y: metric, stroke: 'location' })
+      ],
+      x: { label: 'Date' },
+      y: { label: 'Température (°C)' },
+      width: 700,
+      height: 400,
+    }}
+  />
+</div>

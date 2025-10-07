@@ -1,0 +1,80 @@
+---
+import Layout from "../layouts/Layout.astro";
+import weather from "../assets/weather.json";
+import GraphicWeather from "../components/GraphicWeather.astro";
+---
+
+<Layout title="Weather multi-filtre">
+  <form class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <div>
+      <label for="location" class="block text-sm font-semibold mb-2">Ville :</label>
+      <select id="location" class="w-full border border-gray-300 rounded px-3 py-2 bg-white shadow-sm">
+        <option value="">Toutes</option>
+        {Array.from(new Set(weather.map((d) => d.location))).map((city) => (
+          <option value={city}>{city}</option>
+        ))}
+      </select>
+    </div>
+
+    <div>
+      <label for="year" class="block text-sm font-semibold mb-2">Année :</label>
+      <select id="year" class="w-full border border-gray-300 rounded px-3 py-2 bg-white shadow-sm">
+        <option value="">Toutes</option>
+        {Array.from(new Set(weather.map((d) => new Date(d.date).getFullYear()))).map((y) => (
+          <option value={y}>{y}</option>
+        ))}
+      </select>
+    </div>
+
+    <div>
+      <label for="metric" class="block text-sm font-semibold mb-2">Métrique :</label>
+      <select id="metric" class="w-full border border-gray-300 rounded px-3 py-2 bg-white shadow-sm">
+        <option value="temp_max">Température max</option>
+        <option value="temp_min">Température min</option>
+      </select>
+    </div>
+  </form>
+  <div id="plot-client" class="border rounded bg-white p-4 shadow mt-6"></div>
+
+  <script>
+    import * as Plot from "@observablehq/plot";
+    import weather from "../assets/weather.json";
+
+  const selectLocation = /** @type {HTMLSelectElement | null} */ (document.querySelector("#location"));
+  const selectYear = /** @type {HTMLSelectElement | null} */ (document.querySelector("#year"));
+  const selectMetric = /** @type {HTMLSelectElement | null} */ (document.querySelector("#metric"));
+  const plotDiv = /** @type {HTMLDivElement | null} */ (document.querySelector("#plot-client"));
+
+    function renderPlot() {
+      const location = selectLocation ? selectLocation.value : "";
+      const year = selectYear ? selectYear.value : "";
+      const metric = selectMetric ? selectMetric.value : "temp_max";
+
+      const filtered = weather
+        .map((d) => ({ ...d, date: new Date(d.date) }))
+        .filter((d) =>
+          (!location || d.location === location) &&
+          (!year || d.date.getFullYear().toString() === year)
+        );
+
+      if (!plotDiv) return;
+      plotDiv.innerHTML = "";
+      const plot = Plot.plot({
+        marks: [
+          Plot.line(filtered, { x: "date", y: metric, stroke: "location" }),
+        ],
+        x: { label: "Date" },
+        y: { label: "Température (°C)" },
+        width: 700,
+        height: 400,
+      });
+
+      plotDiv.append(plot);
+    }
+
+    if (selectLocation) selectLocation.addEventListener("change", renderPlot);
+    if (selectYear) selectYear.addEventListener("change", renderPlot);
+    if (selectMetric) selectMetric.addEventListener("change", renderPlot);
+    renderPlot();
+  </script>
+</Layout>

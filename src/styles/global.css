@@ -39,4 +39,21 @@
       @apply flex-col gap-4 items-end;
     }
   }
+
+  /* Submenu styles using details/summary */
+  nav details > summary {
+    @apply list-none outline-none;
+  }
+
+  nav details[open] > summary {
+    @apply text-pink-200;
+  }
+
+  nav details ul {
+    @apply list-none m-0 p-2 flex flex-col gap-2;
+  }
+
+  nav details ul a {
+    @apply text-white/90 px-2 py-1 rounded hover:bg-white/10;
+  }
 }
