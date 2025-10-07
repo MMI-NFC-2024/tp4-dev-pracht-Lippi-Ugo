@@ -1,7 +1,6 @@
 ---
 const { current = "/" } = Astro.props;
 ---
-
 <header>
   <div class="nav-content">
     <nav>
@@ -13,9 +12,9 @@ const { current = "/" } = Astro.props;
           <details class="group">
             <summary class="cursor-pointer text-white">Penguins ▾</summary>
             <ul class="mt-2 bg-white/5 p-2 rounded">
-              <li><a href="/penguinssimple" class={current === "/penguinssimple" ? "active" : ""}>Simple</a></li>
-              <li><a href="/penguinsfiltre" class={current === "/penguinsfiltre" ? "active" : ""}>Filtre</a></li>
-              <li><a href="/penguinsmultifiltre" class={current === "/penguinsmultifiltre" ? "active" : ""}>Multi Filtre</a></li>
+              <li><a href="/penguins/penguinssimple" class={current === "/penguins/penguinssimple" ? "active" : ""}>Simple</a></li>
+              <li><a href="/penguins/penguinsfiltre" class={current === "/penguins/penguinsfiltre" ? "active" : ""}>Filtre</a></li>
+              <li><a href="/penguins/penguinsmultifiltre" class={current === "/penguins/penguinsmultifiltre" ? "active" : ""}>Multi Filtre</a></li>
             </ul>
           </details>
         </li>
@@ -24,9 +23,19 @@ const { current = "/" } = Astro.props;
           <details class="group">
             <summary class="cursor-pointer text-white">Weather ▾</summary>
             <ul class="mt-2 bg-white/5 p-2 rounded">
-              <li><a href="/weathersimple" class={current === "/weathersimple" ? "active" : ""}>Simple</a></li>
-              <li><a href="/weatherfiltre" class={current === "/weatherfiltre" ? "active" : ""}>Filtre</a></li>
-              <li><a href="/weathermultifiltre" class={current === "/weathermultifiltre" ? "active" : ""}>Multi Filtre</a></li>
+              <li><a href="/weather/weathersimple" class={current === "/weather/weathersimple" ? "active" : ""}>Simple</a></li>
+              <li><a href="/weather/weatherfiltre" class={current === "/weather/weatherfiltre" ? "active" : ""}>Filtre</a></li>
+              <li><a href="/weather/weathermultifiltre" class={current === "/weather/weathermultifiltre" ? "active" : ""}>Multi Filtre</a></li>
+            </ul>
+          </details>
+        </li>
+        <li>
+          <details class="group">
+            <summary class="cursor-pointer text-white">Diamonds ▾</summary>
+            <ul class="mt-2 bg-white/5 p-2 rounded">
+              <li><a href="/diamond/diamondsimple" class={current === "/diamond/diamondsimple" ? "active" : ""}>Simple</a></li>
+              <li><a href="/diamond/diamondfiltre" class={current === "/diamond/diamondfiltre" ? "active" : ""}>Filtre</a></li>
+              <li><a href="/diamond/diamondmultifiltre" class={current === "/diamond/diamondmultifiltre" ? "active" : ""}>Multi Filtre</a></li>
             </ul>
           </details>
         </li>
