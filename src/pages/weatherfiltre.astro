@@ -1,0 +1,130 @@
+---
+import Layout from "../layouts/Layout.astro";
+import weather from "../assets/weather.json";
+---
+
+<Layout title="Weather avec filtre">
+  <form class="mb-6">
+    <label for="location" class="block text-sm font-semibold mb-2"
+      >Choisir une ville :</label
+    >
+    <select
+      id="location"
+      class="w-full max-w-xs border border-gray-300 rounded px-3 py-2"
+    >
+      <option value="">Toutes les villes</option>
+      {
+        Array.from(new Set(weather.map((d) => d.location))).map((city) => (
+          <option value={city}>{city}</option>
+        ))
+      }
+    </select>
+  </form>
+
+  <div id="plot" class="border rounded bg-white p-4 shadow"></div>
+
+  <script>
+    import * as Plot from "@observablehq/plot";
+    import weather from "../assets/weather.json";
+
+    const selectLocation = document.querySelector("#location");
+    const plotDiv = document.querySelector("#plot");
+
+    function renderPlot() {
+      const location = selectLocation.value;
+      const filtered = location
+        ? weather.filter((d) => d.location === location)
+        : weather;
+        
+      filtered.forEach((d) => (d.date = new Date(d.date)));
+
+      const colorMap = {
+      "New York": "#facc15", // jaune
+      "Seattle": "#3b82f6"   // bleu
+    };
+
+      plotDiv.innerHTML = "";
+      const plot = Plot.plot({
+        marks: [
+          Plot.line(filtered, {
+            x: "date",
+            y: "temp_max",
+            stroke: "location",
+          }),
+          Plot.line(filtered, {
+            x: "date",
+            y: "temp_min",
+            stroke: "location",
+            strokeOpacity: 0.5,
+          }),
+          
+        ],
+        x: { label: "Date" },
+        y: { label: "Température (°C)" },
+        width: 700,
+        height: 400,
+      });
+
+      plotDiv.append(plot);
+    }
+
+    selectLocation.addEventListener("change", renderPlot);
+    renderPlot();
+  </script>
+</Layout>
+
+<script type="module">
+  import * as Plot from "@observablehq/plot";
+  import weather from "../assets/weather.json";
+
+  const selectLocation = document.querySelector("#location");
+  const plotDiv = document.querySelector("#plot");
+
+  function renderPlot() {
+    const location = selectLocation.value;
+    const filtered = location
+      ? weather.filter(d => d.location === location)
+      : weather;
+
+    // Convertir les dates
+    filtered.forEach(d => d.date = new Date(d.date));
+
+    plotDiv.innerHTML = "";
+
+    const colorMap = {
+      "New York": "#facc15", // jaune
+      "Seattle": "#3b82f6"   // bleu
+    };
+
+    const plot = Plot.plot({
+      marks: [
+        Plot.line(filtered, {
+          x: "date",
+          y: "temp_max",
+          stroke: "location"
+        }),
+        Plot.line(filtered, {
+          x: "date",
+          y: "temp_min",
+          stroke: "location",
+          strokeOpacity: 0.5
+        })
+      ],
+      color: {
+        type: "categorical",
+        domain: ["New York", "Seattle"],
+        range: [colorMap["New York"], colorMap["Seattle"]],
+        label: "Ville"
+      },
+      x: { label: "Date" },
+      y: { label: "Température (°C)" },
+      width: 700,
+      height: 400
+    });
+
+    plotDiv.append(plot);
+  }
+
+  selectLocation.addEventListener("change", renderPlot);
+  renderPlot();
+</script>
