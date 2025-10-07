@@ -1,0 +1,64 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Penguin avec filtre">
+  <form class="mb-6">
+    <label for="species" class="block text-sm font-semibold mb-2">Choisir une espèce :</label>
+    <select name="species" id="species" class="w-full max-w-xs border border-gray-300 rounded px-3 py-2">
+      <option value="">All species</option>
+      <option value="Adelie">Adelie</option>
+      <option value="Chinstrap">Chinstrap</option>
+      <option value="Gentoo">Gentoo</option>
+    </select>
+  </form>
+
+  <div id="plot" class="border rounded bg-white p-4 shadow"></div>
+
+  <script>
+    import * as Plot from "@observablehq/plot";
+    import penguins from "../assets/penguins.json";
+
+    const selectSpecies = document.querySelector("#species");
+    const plotDiv = document.querySelector("#plot");
+
+    function renderPlot() {
+      const species = selectSpecies.value;
+
+      const filtered = species
+        ? penguins.filter(p => p.species === species)
+        : penguins;
+
+      const colorMap = {
+        Adelie: "#1f77b4",
+        Chinstrap: "#ff7f0e",
+        Gentoo: "#e3342f"
+      };
+
+      const plot = Plot.plot({
+        marks: [
+          Plot.dot(filtered, {
+            x: "culmen_length_mm",
+            y: "culmen_depth_mm",
+            stroke: "species"
+          })
+        ],
+        color: {
+          type: "categorical",
+          domain: ["Adelie", "Chinstrap", "Gentoo"],
+          range: [colorMap.Adelie, colorMap.Chinstrap, colorMap.Gentoo]
+        },
+        width: 600,
+        height: 400,
+        marginLeft: 50,
+        marginBottom: 50
+      });
+
+      plotDiv.innerHTML = "";
+      plotDiv.append(plot);
+    }
+
+    selectSpecies.addEventListener("change", renderPlot);
+    renderPlot();
+  </script>
+</Layout>
