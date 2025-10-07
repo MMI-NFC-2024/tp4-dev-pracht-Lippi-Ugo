@@ -3,7 +3,7 @@ import weather from '../assets/weather.json';
 import * as Plot from "@observablehq/plot";
 import PlotFigure from './PlotFigure.astro';
 
-const { location = '', year = '', metric = 'temp_max', title = 'Graphique météo' } = Astro.props;
+const { location = '', year = '', metric = 'temp_max', title = 'Graphique météo', containerId='initial-weather-plot'} = Astro.props;
 
 const data = weather
   .map(d => ({ ...d, date: new Date(d.date) }))
@@ -12,7 +12,8 @@ const data = weather
 
 <div>
   <h1 class="mb-6 text-2xl">{title}{location ? ` — ${location}` : ''}{year ? ` (${year})` : ''}</h1>
-  <PlotFigure
+  <div id={containerId}>
+    <PlotFigure
     options={{
       marks: [
         Plot.line(data, { x: 'date', y: metric, stroke: 'location' })
@@ -23,4 +24,5 @@ const data = weather
       height: 400,
     }}
   />
+  </div>
 </div>

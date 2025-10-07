@@ -1,6 +1,7 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import weather from "../assets/weather.json";
+import Layout from "../../layouts/Layout.astro";
+import weather from "../../assets/weather.json";
+import GraphicWeather from "../../components/GraphicWeather.astro";
 ---
 
 <Layout title="Weather avec filtre">
@@ -21,14 +22,14 @@ import weather from "../assets/weather.json";
     </select>
   </form>
 
-  <div id="plot" class="border rounded bg-white p-4 shadow"></div>
+  <GraphicWeather title="Weather - Filtre" containerId="weatherplot" />
 
   <script>
     import * as Plot from "@observablehq/plot";
-    import weather from "../assets/weather.json";
+    import weather from "../../assets/weather.json";
 
     const selectLocation = document.querySelector("#location");
-    const plotDiv = document.querySelector("#plot");
+    const plotDiv = document.querySelector("#weatherplot");
 
     function renderPlot() {
       const location = selectLocation.value;
