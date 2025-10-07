@@ -1,0 +1,26 @@
+---
+import diamonds from '../assets/diamond.json';
+import * as Plot from "@observablehq/plot";
+import PlotFigure from './PlotFigure.astro';
+
+const { cut = '', color = '', metric = 'price', title = 'Graphique diamants', containerId = 'initial-diamond-plot' } = Astro.props;
+
+const data = diamonds.filter(d => (!cut || d.cut === cut) && (!color || d.color === color));
+---
+
+<div>
+  <h1 class="mb-6 text-2xl">{title}{cut ? ` — ${cut}` : ''}{color ? ` (${color})` : ''}</h1>
+  <div id={containerId}>
+    <PlotFigure
+      options={{
+        marks: [
+          Plot.dot(data, { x: 'carat', y: metric, stroke: 'cut' })
+        ],
+        x: { label: 'Carat' },
+        y: { label: metric },
+        width: 700,
+        height: 400,
+      }}
+    />
+  </div>
+</div>

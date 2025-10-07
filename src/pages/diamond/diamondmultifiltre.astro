@@ -1,0 +1,77 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import diamonds from "../../assets/diamond.json";
+import GraphicDiamond from "../../components/GraphicDiamond.astro";
+---
+
+<Layout title="Diamond multi-filtre">
+  <form class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <div>
+      <label for="cut" class="block text-sm font-semibold mb-2">Cut :</label>
+      <select id="cut" class="w-full border border-gray-300 rounded px-3 py-2 bg-white shadow-sm">
+        <option value="">Tous</option>
+        {Array.from(new Set(diamonds.map((d) => d.cut))).map((c) => (
+          <option value={c}>{c}</option>
+        ))}
+      </select>
+    </div>
+
+    <div>
+      <label for="color" class="block text-sm font-semibold mb-2">Color :</label>
+      <select id="color" class="w-full border border-gray-300 rounded px-3 py-2 bg-white shadow-sm">
+        <option value="">Tous</option>
+        {Array.from(new Set(diamonds.map((d) => d.color))).map((c) => (
+          <option value={c}>{c}</option>
+        ))}
+      </select>
+    </div>
+
+    <div>
+      <label for="metric" class="block text-sm font-semibold mb-2">Métrique :</label>
+      <select id="metric" class="w-full border border-gray-300 rounded px-3 py-2 bg-white shadow-sm">
+        <option value="price">Price</option>
+        <option value="depth">Depth</option>
+      </select>
+    </div>
+  </form>
+
+  <GraphicDiamond title="Diamants - Multi-Filtre" containerId="diamondplot" />
+
+  <script>
+    import * as Plot from "@observablehq/plot";
+    import diamonds from "../../assets/diamond.json";
+
+    const selectCut = /** @type {HTMLSelectElement|null} */ (document.querySelector('#cut'));
+    const selectColor = /** @type {HTMLSelectElement|null} */ (document.querySelector('#color'));
+    const selectMetric = /** @type {HTMLSelectElement|null} */ (document.querySelector('#metric'));
+    const plotDiv = /** @type {HTMLDivElement|null} */ (document.querySelector('#diamondplot'));
+
+    function renderPlot() {
+      const cut = selectCut ? selectCut.value : '';
+      const color = selectColor ? selectColor.value : '';
+      const metric = selectMetric ? selectMetric.value : 'price';
+
+      const filtered = diamonds.filter(d => (!cut || d.cut === cut) && (!color || d.color === color));
+
+      if (!plotDiv) return;
+      plotDiv.innerHTML = '';
+
+      const plot = Plot.plot({
+        marks: [
+          Plot.dot(filtered, { x: 'carat', y: metric, stroke: 'cut' })
+        ],
+        x: { label: 'Carat' },
+        y: { label: metric },
+        width: 700,
+        height: 400,
+      });
+
+      plotDiv.append(plot);
+    }
+
+    if (selectCut) selectCut.addEventListener('change', renderPlot);
+    if (selectColor) selectColor.addEventListener('change', renderPlot);
+    if (selectMetric) selectMetric.addEventListener('change', renderPlot);
+    renderPlot();
+  </script>
+</Layout>
