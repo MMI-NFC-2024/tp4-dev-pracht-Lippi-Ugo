@@ -1,5 +1,6 @@
 ---
-import Layout from "../layouts/Layout.astro";
+import Layout from "../../layouts/Layout.astro";
+import GraphicSpecies from "../../components/GraphicSpecies.astro";
 ---
 
 <Layout title="Penguin multi-filtre">
@@ -34,16 +35,16 @@ import Layout from "../layouts/Layout.astro";
     </div>
   </form>
 
-  <div id="penguinplot" class="border rounded bg-white p-4 shadow"></div>
+  <GraphicSpecies title="Penguins - Multi-Filtre" containerId="penguinsplot" />
 
   <script>
     import * as Plot from "@observablehq/plot";
-    import penguins from "../assets/penguins.json";
+    import penguins from "../../assets/penguins.json";
 
     const selectSpecies = document.querySelector("#species");
     const selectIsland = document.querySelector("#island");
     const selectSex = document.querySelector("#sex");
-    const plotDiv = document.querySelector("#penguinplot");
+    const plotDiv = document.querySelector("#penguinsplot");
 
     function renderPlot() {
       const species = selectSpecies.value;

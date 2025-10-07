@@ -3,13 +3,14 @@ import penguins from '../assets/penguins.json';
 import * as Plot from "@observablehq/plot";
 import PlotFigure from '../components/PlotFigure.astro';
 
-const { species } = Astro.props;
-const penguin = penguins.filter(p => p.species === species);
+const { species, containerId='initial-penguins-plot' } = Astro.props;
+const penguin = species ? penguins.filter(p => p.species === species) : penguins;
 ---
 
 <div>
   <h1 class="mb-12 text-2xl">Graphique pour l'espèce : {species}</h1>
-  <PlotFigure
+  <div id={containerId}>
+    <PlotFigure
     options={{
       marks: [
         Plot.dot(penguin, {
@@ -25,4 +26,5 @@ const penguin = penguins.filter(p => p.species === species);
       },
     }}
     />
+  </div>
 </div>
